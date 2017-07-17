@@ -20,7 +20,10 @@
     <form id='nickname-box'>
       <input id='nickname-input' placeholder="Enter your nickname" /><button>Submit nickname</button>
     </form>
+    <section id='wrapper'>
+      <div id='online-users'></div>
       <ul id="messages"></ul>
+    </section>
     <form id='chatbox' action="">
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
@@ -33,6 +36,7 @@
         $('#nickname-box').submit((e) => {
           e.preventDefault();
           nickname = $('#nickname-input').val()
+          $('#online-users').append($('<p>').text(nickname + ' is online').attr('id', nickname));
           console.log(nickname);
         })
         $('#chatbox').submit((e) => {
@@ -44,6 +48,9 @@
         socket.on('chat message', msg => {
           $('#messages').append($('<li>').text(msg));
         });
+        socket.on('disconnect', () => {
+          $('online-users').delete($(`${nickname}`))
+        })
       });
     </script>
   </body>
